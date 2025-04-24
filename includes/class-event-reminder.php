@@ -181,7 +181,8 @@ class Event_Reminder {
 		$reminder_manager = new Event_Reminder_WC_Manager();
 		$this->loader->add_action('tnotw_event_reminders_cron', $reminder_manager, 'cron_exec');
 		if ( ! wp_next_scheduled('tnotw_event_reminders_cron' ) ) {
-      wp_schedule_event( time(), 'daily', 'tnotw_event_reminders_cron'  );
+			$timestamp = strtotime("12pm");
+      wp_schedule_event($timestamp, 'daily', 'tnotw_event_reminders_cron'  );
     }
 
 	}

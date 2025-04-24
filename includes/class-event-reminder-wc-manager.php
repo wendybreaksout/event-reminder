@@ -29,13 +29,17 @@ class Event_Reminder_WC_Manager implements Event_Reminder_Manager {
 
   public function cron_exec() {
 
+    /*
     if ( ! wp_next_scheduled('tnotw_event_reminders_cron' ) ) {
       wp_schedule_event( time(), 'daily', 'tnotw_event_reminders_cron'  );
     }
+    */
     $this->send_reminders();
+
+    /*
     $timestamp = wp_next_scheduled( 'tnotw_event_reminders_cron'  );
     wp_unschedule_event( $timestamp, 'tnotw_event_reminders_cron'   );
-
+    */
   }
 
   private function get_customized_message( $attendee, $event_id ) {
