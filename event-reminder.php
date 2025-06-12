@@ -16,7 +16,7 @@
  * Plugin Name:       Event Reminder
  * Plugin URI:        https://tnotw.com
  * Description:       Send email reminder to event attendees. 
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            Wendy Emerson
  * Author URI:        https://tnotw.com/
  * License:           GPL-2.0+
@@ -35,10 +35,13 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'EVENT_REMINDER_VERSION', '1.0.1' );
+define( 'EVENT_REMINDER_VERSION', '1.0.2' );
 define('EVENT_REMINDER_TEXT_DOMAIN', 'tnotw_event_reminder');
 define('EVENT_REMINDER_OPTIONS_NAME', 'tnotw_event_reminder_settings');
-define('EVENT_REMINDER_DATE_TIME_FIELD', 'event_datetime'); 
+define('EVENT_REMINDER_DATE_TIME_FIELD', 'event_datetime');
+
+define('EVENT_REMINDER_DEFAULT_LEAD_TIME', 60 ); 
+
 
 /**
  * The code that runs during plugin activation.

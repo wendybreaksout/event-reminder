@@ -31,13 +31,8 @@ class Event_Reminder_Activator {
 	 */
 	public static function activate() {
 
-		if ( current_user_can('activate_plugins') ) {	
-			$options = array();
-			$options['version'] = EVENT_REMINDER_VERSION ;
-			$options['message_text'] = 'Dear __FIRST__, This is a reminder that you are attending __TITLE__ on __DATETIME__';	
-			add_option( EVENT_REMINDER_OPTIONS_NAME, $options );
-		}
-
+		$settings = new Event_Reminder_Settings();
+		$settings->add_option_defaults();
 	}
 
 }

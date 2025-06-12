@@ -3,7 +3,15 @@
 Class Event_Reminder_WC_Event_Retriever implements Event_Reminder_Event_Retriever {
 
   public function get_events() {
-    //  WC products with custom field event_date not equal to null
+
+    $options = get_option( EVENT_REMINDER_OPTIONS_NAME, false) ;
+
+    if ( !isset( $options['lead_time'])) {
+      error_log(__FILE__ . ':' . __LINE__ . ", Cannot get lead time setting");
+      return;
+    }
+
+    $lead_time = $options['lead_time'];
 
     $args = array( 
       'post_type' => 'product',
@@ -16,6 +24,7 @@ Class Event_Reminder_WC_Event_Retriever implements Event_Reminder_Event_Retrieve
     $query = $query = new WP_Query( $args );
   
     if ( $query->have_posts() ) {
+
       while ( $query->have_posts() ) {
         $query->the_post();
         $prod_id =  get_the_ID();
@@ -27,7 +36,7 @@ Class Event_Reminder_WC_Event_Retriever implements Event_Reminder_Event_Retrieve
           $event_timestamp = strtotime( $event_date );
           if ( $event_timestamp ) {
             $now = time();
-            if ( $event_timestamp > $now && (  $event_timestamp - $now ) < (36 * 3600 ) ) {
+            if ( $event_timestamp > $now && (  $event_timestamp - $now ) < ( $lead_time * 3600 ) ) {
               $event_post_IDs[] = $prod_id;
             }
           }

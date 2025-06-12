@@ -45,14 +45,15 @@ class Event_Reminder_Settings {
 	 * @since 1.0.0
 	 */
 	public function add_option_defaults() {
-
-		return;
 		
 		if ( current_user_can('activate_plugins') ) {	
-			$options = array();
-			$options['version'] = $this->version ;
-			$options['message_text'] = 'Dear __FIRST__, This is a reminder that you are attending __TITLE__ on __DATETIME__';	
-			add_option( $this->options_name, $options );
+			if ( ! get_option( $this->options_name, false)) {
+				$options = array();
+				$options['version'] = $this->version ;
+				$options['message_text'] = 'Dear __FIRST__, This is a reminder that you are attending __TITLE__ on __DATETIME__';	
+				$options['lead_time'] = EVENT_REMINDER_DEFAULT_LEAD_TIME;
+				add_option( $this->options_name, $options );
+			}
 		}
 		
 	}
@@ -95,6 +96,13 @@ class Event_Reminder_Settings {
 						__("Reminder message", 
 						EVENT_REMINDER_TEXT_DOMAIN), 
 						array($this, 'reminder_message_render'), 
+						'event-reminder-settings-page',
+						'event-reminder-settings-general-section');
+		
+		add_settings_field('lead_time', 
+						__("Notification lead time (hours)", 
+						EVENT_REMINDER_TEXT_DOMAIN), 
+						array($this, 'lead_time_render'), 
 						'event-reminder-settings-page',
 						'event-reminder-settings-general-section');
     
@@ -142,11 +150,6 @@ class Event_Reminder_Settings {
 	public function reminder_message_render() {
 		$options = get_option( $this->options_name );
 	
-		/*
-		?>
-		<textarea rows="10" cols="50" id="tnotw-event-reminder-message" name="tnotw_event_reminder_settings[message_text]"></textarea>
-		<?php
-		*/
 		$editor_settings = array( 'tinymce' => true, 
 															'default_editor' => 'tinymce',
 															'textarea_name' => 'tnotw_event_reminder_settings[message_text]',
@@ -157,12 +160,28 @@ class Event_Reminder_Settings {
 		
 	}
 
+	public function lead_time_render(  ) {
+
+		$options = get_option( $this->options_name );
+
+		if ( ! isset(  $options['lead_time'])) {
+			$options['lead_time'] = EVENT_REMINDER_DEFAULT_LEAD_TIME;
+		}
+		?>
+		<input type="text" size="3" name="tnotw_event_reminder_settings[lead_time]"
+		       value="<?php echo $options['lead_time']; ?>">
+		<?php
+	}
+
 	public function sanitize( $input ) {
 		
 		$new_input = array();
 		
 		if( isset( $input['message_text'] ) )
 			$new_input['message_text'] = wp_kses( $input['message_text'], 'post' );
+	
+		if( isset( $input['lead_time'] ) )		
+			$new_input['lead_time'] = intval( $input['lead_time']);
 
 
 		return $new_input ;
