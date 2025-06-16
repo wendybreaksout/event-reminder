@@ -6,10 +6,33 @@ Class Event_Reminder_WC_Attendees_Manager implements Event_Reminder_Attendees_Ma
 
     $attendees = array();
 
+    $options = get_option( EVENT_REMINDER_OPTIONS_NAME );
+
+    // get the send limit setting. Set to 1 if not set. 
+    if ( ! isset(  $options['send_limit'])) {
+			error_log(__FILE__ . ':' . __LINE__ . ',' . 'Event reminder notification limit is not set');
+      $notification_limit = 1;
+		}
+    else {
+      $notification_limit = $options['send_limit'];
+    }
+
+
+
     // get WC orders for $id. 
     $order_ids = $this->get_orders_ids_by_product_id( $event_id );
 
     foreach( $order_ids as $order_id ) {
+
+      // get notification count, don't send if at limit else increment and set send count. 
+      $notification_count = get_post_meta( $order_id, EVENT_REMINDER_SEND_COUNT_FIELD_NAME, true );
+      if ( $notification_count > 0 && $notification_count == $notification_limit ) {
+        continue;
+      } 
+      $notification_count++ ;
+      update_post_meta($order_id, EVENT_REMINDER_SEND_COUNT_FIELD_NAME, $notification_count  );
+
+      // get customer info and add to attendees array
       $order = wc_get_order( $order_id );
       $attendee = array(
         'first_name' => $order->get_billing_first_name(),

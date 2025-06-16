@@ -41,6 +41,8 @@ define('EVENT_REMINDER_OPTIONS_NAME', 'tnotw_event_reminder_settings');
 define('EVENT_REMINDER_DATE_TIME_FIELD', 'event_datetime');
 
 define('EVENT_REMINDER_DEFAULT_LEAD_TIME', 60 ); 
+define('EVENT_REMINDER_DEFAULT_SEND_LIMIT', 1 ); 
+define('EVENT_REMINDER_SEND_COUNT_FIELD_NAME', 'event_reminder_notification_count');
 
 
 /**

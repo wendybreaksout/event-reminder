@@ -52,6 +52,7 @@ class Event_Reminder_Settings {
 				$options['version'] = $this->version ;
 				$options['message_text'] = 'Dear __FIRST__, This is a reminder that you are attending __TITLE__ on __DATETIME__';	
 				$options['lead_time'] = EVENT_REMINDER_DEFAULT_LEAD_TIME;
+				$options['send_limit'] = EVENT_REMINDER_DEFAULT_SEND_LIMIT;
 				add_option( $this->options_name, $options );
 			}
 		}
@@ -103,6 +104,13 @@ class Event_Reminder_Settings {
 						__("Notification lead time (hours)", 
 						EVENT_REMINDER_TEXT_DOMAIN), 
 						array($this, 'lead_time_render'), 
+						'event-reminder-settings-page',
+						'event-reminder-settings-general-section');
+
+			add_settings_field('send_limit', 
+						__("Number of times to send reminder", 
+						EVENT_REMINDER_TEXT_DOMAIN), 
+						array($this, 'send_limit_render'), 
 						'event-reminder-settings-page',
 						'event-reminder-settings-general-section');
     
@@ -173,6 +181,19 @@ class Event_Reminder_Settings {
 		<?php
 	}
 
+	public function send_limit_render(  ) {
+
+		$options = get_option( $this->options_name );
+
+		if ( ! isset(  $options['send_limit'])) {
+			$options['send_limit'] = EVENT_REMINDER_DEFAULT_SEND_LIMIT;
+		}
+		?>
+		<input type="text" size="3" name="tnotw_event_reminder_settings[send_limit]"
+		       value="<?php echo $options['send_limit']; ?>">
+		<?php
+	}
+
 	public function sanitize( $input ) {
 		
 		$new_input = array();
@@ -182,6 +203,9 @@ class Event_Reminder_Settings {
 	
 		if( isset( $input['lead_time'] ) )		
 			$new_input['lead_time'] = intval( $input['lead_time']);
+
+		if( isset( $input['send_limit'] ) )		
+			$new_input['send_limit'] = intval( $input['send_limit']);
 
 
 		return $new_input ;
