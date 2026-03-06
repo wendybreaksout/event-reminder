@@ -16,18 +16,24 @@ Class Event_Reminder_WC_Event_Retriever implements Event_Reminder_Event_Retrieve
     $args = array( 
       'post_type' => 'product',
       'meta_key' => EVENT_REMINDER_DATE_TIME_FIELD,
-      'meta_compare' => 'EXISTS'
+      'meta_compare' => 'EXISTS',
+      'posts_per_page' => -1
     );
 
     $event_post_IDs = array();
 
-    $query = $query = new WP_Query( $args );
+    $query = new WP_Query( $args );
   
     if ( $query->have_posts() ) {
 
       while ( $query->have_posts() ) {
         $query->the_post();
         $prod_id =  get_the_ID();
+
+        $terms = wp_get_post_terms( $prod_id, 'product_tag');
+        if ( has_term( 'no-class-notice', 'product_tag', $prod_id)) {
+						continue;
+        }
 
         $event_date = get_post_meta( $prod_id, EVENT_REMINDER_DATE_TIME_FIELD, true );
         $event_date .=  " " . wp_timezone_string();

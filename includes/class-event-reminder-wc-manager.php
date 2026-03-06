@@ -18,10 +18,19 @@ class Event_Reminder_WC_Manager implements Event_Reminder_Manager {
       if ( $attendees ) {
         $subject = get_the_title( $event_id );
 
+        $admin_message = '<h2>' . __("Reminders sent to:") . '</h2><p>';
+
         foreach ( $attendees as $attendee ) {
           $message = $this->get_customized_message( $attendee, $event_id );
           wp_mail( $attendee['email'], html_entity_decode($subject) , $message, $headers);
+          $admin_message .= $attendee['first_name'] . ' ' . $attendee['last_name'] . ', ' . $attendee['email'] . '<br>';
         }
+
+        $admin_message .= '</p>';
+        $admin_subject = 'Reminders sent for ' . html_entity_decode($subject);
+
+        wp_mail( get_bloginfo('admin_email'), $admin_subject , $admin_message, $headers);
+
       }
 
     }

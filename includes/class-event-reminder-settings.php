@@ -157,6 +157,12 @@ class Event_Reminder_Settings {
 
 	public function reminder_message_render() {
 		$options = get_option( $this->options_name );
+
+		if ( ! $options ) {
+			$options = array( 
+				'message_text' => __("Your reminder message texts goes here.")
+			);
+		}
 	
 		$editor_settings = array( 'tinymce' => true, 
 															'default_editor' => 'tinymce',
