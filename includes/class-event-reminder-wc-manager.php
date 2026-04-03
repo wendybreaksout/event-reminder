@@ -4,6 +4,8 @@ class Event_Reminder_WC_Manager implements Event_Reminder_Manager {
 
   public function send_reminders() {
 
+    error_log('Event Reminder: send_reminders called');
+
     $event_retriever = new Event_Reminder_WC_Event_Retriever();
     $event_ids = $event_retriever->get_events();
 
@@ -30,6 +32,7 @@ class Event_Reminder_WC_Manager implements Event_Reminder_Manager {
         $admin_subject = 'Reminders sent for ' . html_entity_decode($subject);
 
         wp_mail( get_bloginfo('admin_email'), $admin_subject , $admin_message, $headers);
+        error_log('Event Reminder: Sent reminders to ' . count( $attendees ) . ' attendees. Event id = ' . $event_id );
 
       }
 
