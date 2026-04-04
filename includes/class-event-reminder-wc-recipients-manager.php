@@ -22,11 +22,14 @@ Class Event_Reminder_WC_Attendees_Manager implements Event_Reminder_Attendees_Ma
     // get WC orders for $id. 
     $order_ids = $this->get_orders_ids_by_product_id( $event_id );
 
+    error_log('Event Reminder: ' . count( $order_ids ) . ' orders found for event id = ' . $event_id );
+
     foreach( $order_ids as $order_id ) {
 
       // get notification count, don't send if at limit else increment and set send count. 
       $notification_count = get_post_meta( $order_id, EVENT_REMINDER_SEND_COUNT_FIELD_NAME, true );
       if ( $notification_count > 0 && $notification_count == $notification_limit ) {
+        error_log('Event Reminder: notification limit of ' . $notification_count . ' hit for order id = ' . $order_id );
         continue;
       } 
       $notification_count++ ;
@@ -41,6 +44,8 @@ Class Event_Reminder_WC_Attendees_Manager implements Event_Reminder_Attendees_Ma
       );
       $attendees[] = $attendee;
     }
+
+    error_log('Event Reminder: ' . count( $attendees) . ' attendees found for event id = ' . $event_id );
     return $attendees;
     
   }

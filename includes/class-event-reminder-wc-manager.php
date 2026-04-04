@@ -17,6 +17,8 @@ class Event_Reminder_WC_Manager implements Event_Reminder_Manager {
       
       $attendees = $attendee_mgr->get_attendees( $event_id );
 
+      error_log('Event reminder: found ' . count( $attendees ) . ' for event id = ' . $event_id );
+
       if ( $attendees ) {
         $subject = get_the_title( $event_id );
 
