@@ -54,10 +54,11 @@ Class Event_Reminder_WC_Event_Retriever implements Event_Reminder_Event_Retrieve
         }
        
       }
-
+      error_log('Event Reminder: found ' . count($event_post_IDs) . '.' );
       return $event_post_IDs;
     }
     else {
+      error_log('Event Reminder: no events were found.' );
       return false;
     }
 
