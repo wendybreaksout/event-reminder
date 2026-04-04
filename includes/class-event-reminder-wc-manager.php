@@ -9,6 +9,11 @@ class Event_Reminder_WC_Manager implements Event_Reminder_Manager {
     $event_retriever = new Event_Reminder_WC_Event_Retriever();
     $event_ids = $event_retriever->get_events();
 
+    if ( ! $event_ids ) {
+      error_log('Event Reminders: no events found or error retrieving them.');
+      return ;
+    }
+
     $attendee_mgr = new Event_Reminder_WC_Attendees_Manager();
 
     $headers = array('Content-Type: text/html; charset=UTF-8');
@@ -17,7 +22,7 @@ class Event_Reminder_WC_Manager implements Event_Reminder_Manager {
       
       $attendees = $attendee_mgr->get_attendees( $event_id );
 
-      error_log('Event reminder: found ' . count( $attendees ) . ' for event id = ' . $event_id );
+      error_log('Event Reminder: found ' . count( $attendees ) . ' for event id = ' . $event_id );
 
       if ( $attendees ) {
         $subject = get_the_title( $event_id );

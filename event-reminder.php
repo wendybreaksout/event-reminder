@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'EVENT_REMINDER_VERSION', '1.0.4' );
+define( 'EVENT_REMINDER_VERSION', '1.0.9' );
 define('EVENT_REMINDER_TEXT_DOMAIN', 'tnotw_event_reminder');
 define('EVENT_REMINDER_OPTIONS_NAME', 'tnotw_event_reminder_settings');
 define('EVENT_REMINDER_DATE_TIME_FIELD', 'event_datetime');

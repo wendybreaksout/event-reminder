@@ -8,7 +8,7 @@ Class Event_Reminder_WC_Event_Retriever implements Event_Reminder_Event_Retrieve
 
     if ( !isset( $options['lead_time'])) {
       error_log(__FILE__ . ':' . __LINE__ . ", Cannot get lead time setting");
-      return;
+      return false;
     }
 
     $lead_time = $options['lead_time'];
@@ -36,9 +36,9 @@ Class Event_Reminder_WC_Event_Retriever implements Event_Reminder_Event_Retrieve
         }
 
         $event_date = get_post_meta( $prod_id, EVENT_REMINDER_DATE_TIME_FIELD, true );
-        $event_date .=  " " . wp_timezone_string();
 
         if ( $event_date ) {
+          $event_date .=  " " . wp_timezone_string();
           $event_timestamp = strtotime( $event_date );
           if ( $event_timestamp ) {
             $now = time();
