@@ -16,7 +16,7 @@
  * Plugin Name:       Event Reminder
  * Plugin URI:        https://tnotw.com
  * Description:       Send email reminder to event attendees. 
- * Version:           1.0.8
+ * Version:           1.0.9
  * Author:            Wendy Emerson
  * Author URI:        https://tnotw.com/
  * License:           GPL-2.0+
