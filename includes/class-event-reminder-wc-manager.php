@@ -31,14 +31,20 @@ class Event_Reminder_WC_Manager implements Event_Reminder_Manager {
 
         foreach ( $attendees as $attendee ) {
           $message = $this->get_customized_message( $attendee, $event_id );
-          wp_mail( $attendee['email'], html_entity_decode($subject) , $message, $headers);
+          $retval = wp_mail( $attendee['email'], html_entity_decode($subject) , $message, $headers);
+          if ( ! $retval ) {
+            error_log('Email Reminders: wp_mail to event attendee failed.' );
+          }
           $admin_message .= $attendee['first_name'] . ' ' . $attendee['last_name'] . ', ' . $attendee['email'] . '<br>';
         }
 
         $admin_message .= '</p>';
         $admin_subject = 'Reminders sent for ' . html_entity_decode($subject);
 
-        wp_mail( get_bloginfo('admin_email'), $admin_subject , $admin_message, $headers);
+        $retval = wp_mail( get_bloginfo('admin_email'), $admin_subject , $admin_message, $headers);
+        if ( ! $retval ) {
+            error_log('Email Reminders: wp_mail to admin failed.' );
+        }
         error_log('Event Reminder: Sent reminders to ' . count( $attendees ) . ' attendees. Event id = ' . $event_id );
 
       }
